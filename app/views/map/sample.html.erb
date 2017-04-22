@@ -1,0 +1,57 @@
+<h1>Map#sample</h1>
+<p>Find me in app/views/map/sample.html.erb</p>
+
+<hr>
+
+<div id="map" style="width:400px; height:400px;"></div>
+
+<script>
+  var map;
+  // 地図のインスタンスを作成する
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: <%=@center[:lat]%>, lng: <%=@center[:lng]%>},
+      zoom: <%=@zoom%>,
+      mapTypeControl: false,
+    });
+
+    // 地図の中心点にマーカーを設置する
+    var marker = new google.maps.Marker( {
+      map: map ,	// 地図
+      position: new google.maps.LatLng( <%=@center[:lat]%>, <%=@center[:lng]%> ) ,
+    } ) ;
+
+    // 地図の中心点に円を設置する
+    var circle = new google.maps.Circle( {
+      center: new google.maps.LatLng( <%=@center[:lat]%>, <%=@center[:lng]%> ) ,
+      map: map ,	// 設置する地図
+      radius: <%=@radius%> ,
+      strokeColor: "red" , // 円の線の色
+      fillColor: "red" , // 円の塗りつぶしの色
+      strokeWeight: 1 , // 円の線の太さ
+    } ) ;
+
+    // マーカーを設置する
+    var markers = [] ;
+    <% @location.each_with_index do |l, i|%>
+    markers[<%= i %>] = new google.maps.Marker( {
+    	map: map ,	// 地図
+      icon:  "<%=l[:icon]%>",
+      label: "<%=l[:label]%>",
+    	position: new google.maps.LatLng( <%=l[:lat]%>, <%=l[:lng]%> ) ,
+    } ) ;
+    <% end %>
+
+    // 情報ウィンドウを設置する
+    <% @window.each do |w|%>
+    var infoWindow = new google.maps.InfoWindow( {
+      content: "<%=w[:label]%>" ,	// 内容
+      position: new google.maps.LatLng( <%=w[:lat]%>, <%=w[:lng]%> ) ,	// 位置座標
+    } ) ;
+    infoWindow.open(map) ;
+    <% end %>
+
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"
+async defer></script>
