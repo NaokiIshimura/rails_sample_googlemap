@@ -2,70 +2,60 @@ class MapController < ApplicationController
   def sample
     # 地図
     @zoom = 15
-    @center = {lat: '35.681298', lng: '139.766247'}
+    @center = { lat: '35.681298', lng: '139.766247' }
 
     # 円
     @radius = 100
 
     # マーカー
-    @location = set_location
+    p @location = set_location
 
     # 情報ウィンドウ
     @window = set_window
-
   end
 
   private
 
   def set_location
+    base_data = [
+      { lat: 35.681298 + 0.005, lng: 139.766247 },
+      { lat: 35.681298 - 0.005, lng: 139.766247 },
+      { lat: 35.681298, lng: 139.766247 + 0.005 },
+      { lat: 35.681298, lng: 139.766247 - 0.005 },
+    ]
+
     location = []
-    location.push({
-                       label: 'in',
-                       lat: 35.681298-0.005,
-                       lng: 139.766247,
-                       icon: 'http://mt.google.com/vt/icon/name=icons/spotlight/star_L_8x.png&scale=1',
-                   })
-    location.push({
-                       label: 'in',
-                       lat: 35.681298+0.005,
-                       lng: 139.766247,
-                       icon: 'http://mt.google.com/vt/icon/name=icons/spotlight/star_L_8x.png&scale=1',
-                   })
-    location.push({
-                       label: 'in',
-                       lat: 35.681298,
-                       lng: 139.766247-0.005,
-                       icon: 'http://mt.google.com/vt/icon/name=icons/spotlight/star_L_8x.png&scale=1',
-                   })
-    location.push({
-                       label: 'in',
-                       lat: 35.681298,
-                       lng: 139.766247+0.005,
-                       icon: 'http://mt.google.com/vt/icon/name=icons/spotlight/star_L_8x.png&scale=1',
-                   })
+
+    base_data.each do |data|
+      location.push(
+        label: 'in',
+        lat: data[:lat],
+        lng: data[:lng],
+        icon: 'http://mt.google.com/vt/icon/name=icons/spotlight/star_L_8x.png&scale=1'
+      )
+    end
+
+    location
   end
 
   def set_window
+    base_data = [
+      { lat: 35.681298 + 0.0025, lng: 139.766247 },
+      { lat: 35.681298 - 0.0025, lng: 139.766247 },
+      { lat: 35.681298, lng: 139.766247 + 0.0025 },
+      { lat: 35.681298, lng: 139.766247 - 0.0025 }
+    ]
+
     window = []
-    window.push({
-                    label: 'out',
-                    lat: 35.681298-0.0025,
-                    lng: 139.766247,
-                })
-    window.push({
-                    label: 'out',
-                    lat: 35.681298+0.0025,
-                    lng: 139.766247,
-                })
-    window.push({
-                    label: 'out',
-                    lat: 35.681298,
-                    lng: 139.766247-0.0025,
-                })
-    window.push({
-                    label: 'out',
-                    lat: 35.681298,
-                    lng: 139.766247+0.0025,
-                })
+
+    base_data.each do |data|
+      window.push(
+        label: 'out',
+        lat: data[:lat],
+        lng: data[:lng]
+      )
+    end
+
+    window
   end
 end
