@@ -14,6 +14,21 @@ class MapController < ApplicationController
     @window = set_window
   end
 
+  def sample2
+    # 地図
+    @zoom = 15
+    @center = { lat: '35.681298', lng: '139.766247' }
+  
+    # 円
+    @radius = 100
+  
+    # マーカー
+    p @location = set_location
+  
+    # 情報ウィンドウ
+    @window = set_window
+  end
+
   private
 
   def set_location
